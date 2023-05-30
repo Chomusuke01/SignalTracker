@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">StorageExample</string>
+    <string name="name">Name</string>
+    <string name="age">Age</string>
+    <string name="add">Add person</string>
+    <string name="store">Store</string>
+    <string name="personName">Person name</string>
+    <string name="personage">Person age</string>
+</resources>

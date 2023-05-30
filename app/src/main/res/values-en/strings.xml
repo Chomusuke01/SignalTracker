@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Test</string>
+    <string name="buttonLoaction">Button Location</string>
+    <string name="lastLocation">Last Location</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="nueva_etapa">New phase</string>
+    <string name="Fin_etapa">Finish and save</string>
+    <string name="inicio">Start</string>
+    <string name="nombreFichero">Enter filename to save data</string>
+    <string name="enterFilename">Filename</string>
+    <string name="etapaActual">Current phase</string>
+    <string name="nivelSeñal">Signal level</string>
+</resources>

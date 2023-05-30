@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Test</string>
+    <string name="buttonLoaction">Button Location</string>
+    <string name="lastLocation">Last Location</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="nueva_etapa">Nueva etapa</string>
+    <string name="Fin_etapa">Finalizar y guardar</string>
+    <string name="inicio">Comenzar</string>
+    <string name="nombreFichero">Introduzca el nombre del fichero para guardar los datos</string>
+    <string name="enterFilename">Nombre del fichero</string>
+    <string name="etapaActual">Etapa actual</string>
+    <string name="nivelSeñal">Nivel de señal</string>
+</resources>
