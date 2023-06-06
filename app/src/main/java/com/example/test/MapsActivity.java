@@ -54,7 +54,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnCircleClickListener {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
@@ -86,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         textViewEtapa.setTextSize(20);
         textViewEtapa.setBackgroundColor(Color.WHITE);
-        textViewEtapa.setText(getString(R.string.etapaActual) + ": " + etapaActual);
+        textViewEtapa.setText(String.format("%s: %d", getString(R.string.etapaActual), etapaActual));
         etapas = new HashMap<>();
         antenasLocalizadas = new HashSet<>();
         setContentView(binding.getRoot());
@@ -123,6 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(spain));
         mMap.setOnMarkerClickListener(this);
+        mMap.setOnCircleClickListener(this);
         showPosition();
         showLocationUpdates();
     }
@@ -149,6 +150,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             case 0: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     showPosition();
+                    showLocationUpdates();
                 }else {
                     Toast.makeText(this, "Need permisions to work", Toast.LENGTH_SHORT).show();
                 }
@@ -217,14 +219,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         CircleOptions punto = new CircleOptions()
                                 .center(new LatLng(location.getLatitude(), location.getLongitude()))
                                 .radius(3).fillColor(color)
-                                .strokeColor(Color.BLACK).strokeWidth(2);
+                                .strokeColor(Color.BLACK).strokeWidth(2)
+                                .clickable(true)
+                                ;
+
                         Circle circle = mMap.addCircle(punto);
-
-                        //marker.title("Nivel de señal: " + infoPunto.getSignalStrength() + "\ndBm: " + infoPunto.getdBm());
-                        Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())));
-                        marker.setAlpha(0);
-
-                        marker.setTag(getString(R.string.nivelSeñal) + ": " + infoPunto.getSignalStrength() + "\ndBm: " + infoPunto.getdBm());
+                        circle.setTag(getString(R.string.nivelSeñal) + ": " + infoPunto.getSignalStrength() + "\ndBm: " + infoPunto.getdBm());
                         lastLocation = location;
                     }
                 }
@@ -261,22 +261,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void localizarAntenas(int mcc, int mnc, int lac, int cellID){
 
         Call<Data> call = RetrofitClient.getInstance().getMyApi().getAntennaInformtion(1.1,"open", mcc, mnc, lac, cellID);
-        Log.d("HTTP__",call.toString());
+
         call.enqueue(new Callback<Data>() {
             @Override
             public void onResponse(Call<Data> call, Response<Data> response) {
                 Data result = response.body();
                 AntennaResults antena = result.getAntennaResults();
-                Log.d("LAT__", String.valueOf(antena.getLatitud()));
-                Log.d("LON__", String.valueOf(antena.getLongitud()));
-
                 LatLng ant = new LatLng(antena.getLatitud(), antena.getLongitud());
                 mMap.addMarker(new MarkerOptions().position(ant));
             }
 
             @Override
             public void onFailure(Call<Data> call, Throwable t) {
-                Log.d("FALLO__", "no va");
+
             }
         });
     }
@@ -286,7 +283,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE},0);
-            // Preguntar si esto puede ser así (-1)
             return null;
         }
         List<CellInfo> cellInfoList = telephonyManager.getAllCellInfo();
@@ -331,5 +327,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             etapas.get(etapaActual).add(infoPunto);
         }
         return infoPunto;
+    }
+
+    @Override
+    public void onCircleClick(@NonNull Circle circle) {
+        Toast.makeText(this, String.valueOf(circle.getTag()), Toast.LENGTH_SHORT).show();
     }
 }
