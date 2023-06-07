@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Test</string>
+    <string name="app_name">SignalTracker</string>
     <string name="buttonLoaction">Button Location</string>
     <string name="lastLocation">Last Location</string>
     <string name="title_activity_maps">MapsActivity</string>
