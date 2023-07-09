@@ -1,12 +1,9 @@
 package com.example.test;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.graphics.EmbossMaskFilter;
 import android.os.Bundle;
-
-
 import com.androidplot.pie.PieChart;
 import com.androidplot.pie.Segment;
 import com.androidplot.pie.SegmentFormatter;
@@ -14,7 +11,7 @@ import com.androidplot.util.PixelUtils;
 
 public class PieChartActivity extends AppCompatActivity {
 
-    PieChart pie;
+    private PieChart pie;
 
     private Segment s1;
     private Segment s2;
@@ -32,10 +29,10 @@ public class PieChartActivity extends AppCompatActivity {
         final float padding = PixelUtils.dpToPix(30);
         pie.getPie().setPadding(padding, padding, padding, padding);
 
-        s1 = new Segment("sa", 3);
+        s1 = new Segment("sa", 0);
         s2 = new Segment("s2", 1);
-        s3 = new Segment("s3", 7);
-        s4 = new Segment("s4", 9);
+        s3 = new Segment("s3", 2);
+        s4 = new Segment("s4", 0);
 
         EmbossMaskFilter emf = new EmbossMaskFilter(
                 new float[]{1, 1, 1}, 0.4f, 10, 8.2f);
